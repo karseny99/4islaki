@@ -162,7 +162,139 @@ def third_part(matrix):
     print(f"determinant: {det}")
 
 
+def tridiagonal_method(matrix):
+    a, b, c, d = copy.deepcopy(matrix)
+
+    n = len(d)
+
+    p = [0] * n
+    q = [0] * n
+
+    # forward
+
+    p[0] = -c[0] / b[0]
+    q[0] = d[0] / b[0]
+
+    for i in range(1, n):
+        denominator = a[i] * p[i - 1] + b[i]
+        p[i] = -c[i] / denominator
+        q[i] = (d[i] - a[i] * q[i - 1]) / denominator
+    
+    # backward
+        
+    x = [0] * n
+    x[-1] = q[-1]
+
+    for i in range(n - 2, -1, -1):
+        x[i] = p[i] * x[i + 1] + q[i]
+    
+    return x
+
+
+
+def fourth_part():
+
+    matrix = [[0, 2, -9, -4, 7],        # a - under diag
+            [18, -9, 21, -10, 12],      # b - diag
+            [-9, -4, -8, 5, 0],         # c - above  
+            [-81, 71, -39, 64, 3]]      # d - constants
+
+    
+    def is_matrix_good(matrix):
+        first_cond = True
+        second_cond = True
+
+        for i in range(len(matrix[0])):
+            first_cond = first_cond and (abs(matrix[1][i]) >= abs(matrix[0][i]) + abs(matrix[2][i]))
+            second_cond = second_cond or (abs(matrix[1][i]) > abs(matrix[0][i]) + abs(matrix[2][i]))
+
+        return first_cond and second_cond
+
+    def check_with_np(A, b):
+        x = np.linalg.solve(A, b)
+        return x
+
+    A = np.array([
+        [18, -9, 0, 0, 0],
+        [2, -9, -4, 0, 0],
+        [0, -9, 21, -8, 0],
+        [0, 0, -4, -10, 5],
+        [0, 0, 0, 7, 12]
+    ])
+
+    b = np.array([-81, 71, -39, 64, 3])
+
+    print(f"numpy: {check_with_np(A, b)}")
+    print(f"my impl: {tridiagonal_method(matrix)}\nIs matrix good? {is_matrix_good(matrix)}")
+
+
+
+def fixed_point_iterations(matrix, epsilon=1e-6, max_iter=1000):
+    matrix_copy = copy.deepcopy(matrix)
+    n = len(matrix_copy)
+    A = [row[:-1] for row in matrix_copy]
+    b = [row[-1] for row in matrix_copy]
+
+    x = [0.0] * n
+
+    for iter in range(max_iter):
+        x_new = [0.0] * n
+
+        for i in range(n):
+            sm = 0.0
+            for j in range(n):
+                if i != j:
+                    sm += A[i][j] * x[j]
+            x_new[i] = (b[i] - sm) / A[i][i]
+        
+        diff = 0.0
+        for i in range(n):
+            diff += abs(x_new[i] - x[i])
+        
+        if diff < epsilon:
+            print(f"Converged by {iter} iterations")
+            return x_new
+        
+        x = x_new
+    
+    print(f"Max iter exceeded")
+    return x
+
+
+
+
+def fifth_part():
+
+    matrix = [[21, -6, -9, -4, 127],
+              [-6, 20, -4, 2, -144],
+              [-2, -7, -20, 3, 236],
+              [4, 9, 6, 24, 0, -5]]
+    
+    A = np.array([
+        [21, -6, -9, -4],
+        [-6, 20, -4, 2],
+        [-2, -7, -20, 3],
+        [4, 9, 6, 24]
+    ])
+
+    # Вектор правой части
+    b = np.array([127, -144, 236, -5])
+
+    def check_with_np(A, b):
+        x = np.linalg.solve(A, b)
+        return x
+
+    print(f"numpy: {check_with_np(A, b)}")
+    print(f"my impl: {fixed_point_iterations(matrix)}")
+
+
 if __name__ == "__main__":
-    first_part(matrix)
-    second_part(matrix)
-    third_part(matrix)
+    first_part(matrix) # gauss 
+    print('\n')
+    second_part(matrix) # inverse
+    print('\n')
+    third_part(matrix) # determinant
+    print('\n')
+    fourth_part() # progonka
+    print('\n')
+    fifth_part() # fixed-point iteration
