@@ -52,6 +52,10 @@ def gauss_backward(matrix):
 
 
 def gauss_determinant(matrix):
+    
+    '''
+        input matrix -> upper triangular -> det is multuplication of diagonals
+    '''
 
     matrix_copy = copy.deepcopy(matrix)
 
@@ -113,6 +117,12 @@ def first_part(matrix):
 
 def second_part(matrix):
     def inv(matrix):
+
+        '''
+            A * A(-1) = I  
+            [A | I] --> [I | A(-1)]
+        '''
+
         n = len(matrix)
         augmented_matrix = []
 
@@ -163,6 +173,12 @@ def third_part(matrix):
 
 
 def tridiagonal_method(matrix):
+
+    '''
+        a(i) * x(i-1) + b(i) * x(i) + c(i) * x(i+1) = d(i)
+        x(i-1) = p(i-1) * x(i) + q(i-1)
+    '''
+
     a, b, c, d = copy.deepcopy(matrix)
 
     n = len(d)
@@ -230,6 +246,11 @@ def fourth_part():
 
 
 def fixed_point_iterations(matrix, epsilon=1e-6, max_iter=1000):
+
+    '''
+        x(k+1) = ( b - A_i * x(k) ) * A(-1))
+    '''
+
     matrix_copy = copy.deepcopy(matrix)
     n = len(matrix_copy)
     A = [row[:-1] for row in matrix_copy]
@@ -262,6 +283,10 @@ def fixed_point_iterations(matrix, epsilon=1e-6, max_iter=1000):
 
 
 def seidel_method(matrix, epsilon=1e-6, max_iter=1000):
+    '''
+        x(k+1) = ( b - L * x(k+1) - U * x(k) ) / A(-1)
+    '''
+
     matrix_copy = copy.deepcopy(matrix)
     n = len(matrix_copy)
     A = [row[:-1] for row in matrix_copy]
@@ -286,6 +311,34 @@ def seidel_method(matrix, epsilon=1e-6, max_iter=1000):
         if diff < epsilon:
             print(f"Converged by {iter} iterations")
             return x
+            
+    print(f"Max iter exceeded")
+    return x
+def seidel_method(matrix, epsilon=1e-6, max_iter=1000):
+    matrix_copy = copy.deepcopy(matrix)
+    n = len(matrix_copy)
+    A = [row[:-1] for row in matrix_copy]
+    b = [row[-1] for row in matrix_copy]
+
+    x = [0.0] * n
+
+    for iter in range(max_iter):
+        x_prev = x.copy()
+
+        for i in range(n):
+            sm = 0.0
+            for j in range(n):
+                if i != j:
+                    sm += A[i][j] * x[j]
+        
+        diff = 0.0
+        for i in range(n):
+            diff += abs(x_prev[i] - x[i])
+        
+        if diff < epsilon:
+            print(f"Converged by {iter} iterations")
+    print(f"fixed-point iteration: {fixed_point_iterations(matrix)}")
+    print(f"Seidel method: {seidel_method(matrix)}")
             
     print(f"Max iter exceeded")
     return x
