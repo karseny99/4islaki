@@ -314,34 +314,6 @@ def seidel_method(matrix, epsilon=1e-6, max_iter=1000):
             
     print(f"Max iter exceeded")
     return x
-def seidel_method(matrix, epsilon=1e-6, max_iter=1000):
-    matrix_copy = copy.deepcopy(matrix)
-    n = len(matrix_copy)
-    A = [row[:-1] for row in matrix_copy]
-    b = [row[-1] for row in matrix_copy]
-
-    x = [0.0] * n
-
-    for iter in range(max_iter):
-        x_prev = x.copy()
-
-        for i in range(n):
-            sm = 0.0
-            for j in range(n):
-                if i != j:
-                    sm += A[i][j] * x[j]
-        
-        diff = 0.0
-        for i in range(n):
-            diff += abs(x_prev[i] - x[i])
-        
-        if diff < epsilon:
-            print(f"Converged by {iter} iterations")
-    print(f"fixed-point iteration: {fixed_point_iterations(matrix)}")
-    print(f"Seidel method: {seidel_method(matrix)}")
-            
-    print(f"Max iter exceeded")
-    return x
 
 
 def fifth_part():
@@ -358,7 +330,6 @@ def fifth_part():
         [4, 9, 6, 24]
     ])
 
-    # Вектор правой части
     b = np.array([127, -144, 236, -5])
 
     def check_with_np(A, b):
