@@ -8,6 +8,7 @@ matrix = [
 import numpy as np
 import copy
 import math
+import matplotlib.pyplot as plt
 
 
 def jacobi_rotation(matrix, epsilon=1e-6, max_iterations=1000):
@@ -15,6 +16,8 @@ def jacobi_rotation(matrix, epsilon=1e-6, max_iterations=1000):
 
     A = copy.deepcopy(matrix)
     Q = [[1.0 if i == j else 0.0 for j in range(n)] for i in range(n)] 
+
+    total_iterations = max_iterations
 
     for iteration in range(max_iterations):
         max_val = 0.0
@@ -26,6 +29,7 @@ def jacobi_rotation(matrix, epsilon=1e-6, max_iterations=1000):
                     p, q = i, j
 
         if max_val < epsilon:
+            total_iterations = iteration
             print(f"The method has converged by {iteration} iterations")
             break
 
@@ -58,14 +62,27 @@ def jacobi_rotation(matrix, epsilon=1e-6, max_iterations=1000):
 
     eigenvalues = [A[i][i] for i in range(n)][::-1]
     eigenvectors = [[Q[i][j] for j in range(n)][::-1] for i in range(n)]
+    
+    return eigenvalues, eigenvectors, total_iterations
 
-    return eigenvalues, eigenvectors
 
+def plot_iterations_vs_epsilon(matrix):
+    epsilons = np.linspace(10e-15, 10e-2, 15)
+    iterations = []
+    for epsilon in epsilons:
+        iterations.append(jacobi_rotation(matrix, epsilon)[2])
+    
+    plt.plot(epsilons, iterations, marker='o')
+    plt.xscale('log') 
+    plt.xlabel('Error (ε)')
+    plt.ylabel('Num of iterations')
+    plt.grid(True)
+    plt.show()
 
 
 
 if __name__ == "__main__":
-    eigenvalues, eigenvectors = jacobi_rotation(matrix)
+    eigenvalues, eigenvectors, _ = jacobi_rotation(matrix)
 
     eigenvalues_np, eigenvectors_np = np.linalg.eigh(matrix)
 
@@ -76,3 +93,5 @@ if __name__ == "__main__":
     for vec in eigenvectors:
         print(vec)
     print(f"numpy:\n {eigenvectors_np}")
+
+    plot_iterations_vs_epsilon(matrix)
