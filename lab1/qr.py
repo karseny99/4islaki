@@ -1,3 +1,22 @@
+'''
+
+    A = QR, where Q: Q^(-1) = Q^T and R: Up-triangular
+
+    - Applying n - 1 times Householder's transformation
+        - A(n+1) = H(n + 1) * A(n)
+
+        - Result is
+            Q = H1*H2*...*H(n-1)
+            R = A(n-1)
+
+    - Evaluate A = R*Q
+
+    - Find Q' and R' for new A
+    
+    - Stop condition is small sum of under-diagonals
+
+'''
+
 from math import sqrt
 import numpy as np
 

@@ -92,11 +92,11 @@ def gauss_determinant(matrix):
 
 
 
+def solve_linear_system(matrix):
+    return gauss_backward(gauss_forward(matrix))
 
 def first_part(matrix): 
 
-    def slay(matrix):
-        return gauss_backward(gauss_forward(matrix))
 
     def check_with_np(A, b):
         x = np.linalg.solve(A, b)
@@ -112,7 +112,7 @@ def first_part(matrix):
     b = np.array([18, -12, 6, -12])
 
     print(f"numpy: {check_with_np(A, b)}")
-    print(f"my impl: {slay(matrix)}")
+    print(f"my impl: {solve_linear_system(matrix)}")
 
 
 def second_part(matrix):

@@ -1,3 +1,27 @@
+
+
+'''
+
+    Jl = U^T * A * U, where U^T = U^-1
+
+    - find such U that max element A[i][j] will equal zero after
+        A(n+1) = U^T * A(n) * U
+
+    - U is a rotation matrix where
+        - U[i][j] = -sin(phi)
+        - U[j][i] = sin(phi)
+        - U[i][i] = U[j][j] = cos(phi)
+    
+        - diagonal consists ones
+        - other elements are zeros
+        
+    - phi evaluates from A[i][j] = 0
+
+    - stop condition is small sum of non diagonal elems
+    
+'''
+
+
 matrix = [
     [8, -3, 9],
     [-3, 8, -2],
