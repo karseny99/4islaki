@@ -70,7 +70,6 @@ def least_squares_poly(x, y, n):
         b[i] = np.sum(y * x**i)
 
     coeffs = LU(A).solve(b)
-
     return coeffs
 
 def poly_func(coeffs, x):
@@ -90,18 +89,18 @@ print("Sum of squared errors (1st degree):", sse_1)
 print("\n2nd degree polynomial coefficients:", coeffs_2)
 print("Sum of squared errors (2nd degree):", sse_2)
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
-plt.figure(figsize=(10, 6))
-plt.scatter(x, y, color='red', label='Original data')
-x_plot = np.linspace(min(x), max(x), 100)
-y_plot_1 = np.array([poly_func(coeffs_1, xi) for xi in x_plot])
-y_plot_2 = np.array([poly_func(coeffs_2, xi) for xi in x_plot])
-plt.plot(x_plot, y_plot_1, label=f'1st degree (SSE={sse_1:.4f})')
-plt.plot(x_plot, y_plot_2, label=f'2nd degree (SSE={sse_2:.4f})')
-plt.xlabel('x')
-plt.ylabel('y')
-plt.title('Least Squares Polynomial Approximation')
-plt.legend()
-plt.grid(True)
-plt.show()
+# plt.figure(figsize=(10, 6))
+# plt.scatter(x, y, color='red', label='Original data')
+# x_plot = np.linspace(min(x), max(x), 100)
+# y_plot_1 = np.array([poly_func(coeffs_1, xi) for xi in x_plot])
+# y_plot_2 = np.array([poly_func(coeffs_2, xi) for xi in x_plot])
+# plt.plot(x_plot, y_plot_1, label=f'1st degree (SSE={sse_1:.4f})')
+# plt.plot(x_plot, y_plot_2, label=f'2nd degree (SSE={sse_2:.4f})')
+# plt.xlabel('x')
+# plt.ylabel('y')
+# plt.title('Least Squares Polynomial Approximation')
+# plt.legend()
+# plt.grid(True)
+# plt.show()
